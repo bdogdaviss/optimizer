@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Optimizer Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            color: #E5E7EB;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .revoke-btn {
+            background-color: #EF4444; /* Red-500 */
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+        .revoke-btn:hover {
+            background-color: #DC2626; /* Red-600 */
+        }
+        .revoke-btn:disabled {
+            background-color: #6B7280; /* Gray-500 */
+            cursor: not-allowed;
+        }
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #1F2937;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Aura Optimizer Admin Panel</h1>
+        <p class="text-gray-400 mb-4">A real-time list of all generated license keys and their activation status.</p>
+
+        <div id="loading" class="text-center text-gray-500 my-8">Loading license keys...</div>
+
+        <div class="bg-gray-800 rounded-lg shadow-xl p-6">
+            <ul id="license-key-list" class="space-y-4">
+                <!-- License key items will be populated here by JavaScript -->
+            </ul>
+        </div>
+        <p class="text-red-400 text-sm mt-4">
+            <strong class="font-bold">SECURITY WARNING:</strong> This admin panel directly modifies your database. For production, implement Firebase Authentication and Cloud Functions for secure key management.
+        </p>
+    </div>
+
+    <!-- Confirmation Modal UI -->
+    <div id="revoke-modal-overlay" class="modal-overlay hidden">
+        <div class="modal-content text-center">
+            <h2 class="text-xl font-bold mb-4">Confirm Revocation</h2>
+            <p id="revoke-modal-message" class="text-gray-300 mb-6">Are you sure you want to revoke access for this key?</p>
+            <div class="flex justify-center space-x-4">
+                <button id="confirm-revoke-btn" class="revoke-btn">Revoke</button>
+                <button id="cancel-revoke-btn" class="bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-700">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // IMPORTANT: Replace with your actual Firebase project configuration.
+        const firebaseConfig = {
+            apiKey: "AIzaSyCx62ICCDFVoskUgyHdo3r8XZYECASDgQ4",
+            authDomain: "aura-opt-admin.firebaseapp.com",
+            projectId: "aura-opt-admin",
+            storageBucket: "aura-opt-admin.firebasestorage.app",
+            messagingSenderId: "622881381421",
+            appId: "1:622881381421:web:8807807c058754fc062ca4",
+            measurementId: "G-NXX5J9BEH0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const loadingElement = document.getElementById('loading');
+        const licenseKeyListElement = document.getElementById('license-key-list');
+
+        // Modal elements
+        const revokeModalOverlay = document.getElementById('revoke-modal-overlay');
+        const revokeModalMessage = document.getElementById('revoke-modal-message');
+        const confirmRevokeBtn = document.getElementById('confirm-revoke-btn');
+        const cancelRevokeBtn = document.getElementById('cancel-revoke-btn');
+
+        // Global variable to hold the key to be revoked
+        let keyToRevoke = null;
+
+        // Function to show the custom confirmation modal
+        function showRevokeModal(key) {
+            keyToRevoke = key;
+            revokeModalMessage.textContent = `Are you sure you want to revoke access for key: ${key}?`;
+            revokeModalOverlay.classList.remove('hidden');
+        }
+
+        // Function to hide the modal
+        function hideRevokeModal() {
+            revokeModalOverlay.classList.add('hidden');
+            keyToRevoke = null;
+        }
+
+        // Modal button event listeners
+        cancelRevokeBtn.addEventListener('click', hideRevokeModal);
+
+        confirmRevokeBtn.addEventListener('click', async () => {
+            if (!keyToRevoke) return;
+
+            // Optional: Disable button and show a spinner if needed
+            confirmRevokeBtn.disabled = true;
+            confirmRevokeBtn.textContent = 'Revoking...';
+
+            try {
+                // Update the document in 'license_keys'
+                const keyDocRef = doc(db, 'license_keys', keyToRevoke);
+                await updateDoc(keyDocRef, {
+                    isUsed: false,
+                    usedByHwid: null,
+                    activatedAt: null
+                });
+
+                console.log(`License key ${keyToRevoke} successfully revoked.`);
+                // Show success message and then hide modal
+                hideRevokeModal();
+            } catch (error) {
+                console.error("Error revoking license key:", error);
+                // Show an error message in the modal or a temporary message
+                revokeModalMessage.textContent = `Failed to revoke license key ${keyToRevoke}. See console for details.`;
+            } finally {
+                 // Re-enable button and reset text after operation
+                confirmRevokeBtn.disabled = false;
+                confirmRevokeBtn.textContent = 'Revoke';
+            }
+        });
+
+        // Set up a real-time listener for the 'license_keys' collection
+        onSnapshot(collection(db, "license_keys"), (snapshot) => {
+            loadingElement.style.display = 'none';
+            licenseKeyListElement.innerHTML = '';
+
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const listItem = document.createElement('li');
+                listItem.className = 'bg-gray-700/50 p-4 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center space-y-2 md:space-y-0';
+
+                const statusColor = data.isUsed ? 'text-red-400' : 'text-green-400';
+                const statusText = data.isUsed ? 'USED' : 'AVAILABLE';
+                const hwidDisplay = data.usedByHwid ? `<p class="text-sm text-gray-400">HWID: <span class="font-mono">${data.usedByHwid}</span></p>` : '';
+                const activatedAtDisplay = data.activatedAt ? `<p class="text-xs text-gray-500">Activated: ${new Date(data.activatedAt).toLocaleString()}</p>` : '';
+
+                listItem.innerHTML = `
+                    <div class="flex-grow">
+                        <p class="font-bold text-lg">${data.key} <span class="text-sm ${statusColor}">(${statusText})</span></p>
+                        ${hwidDisplay}
+                        ${activatedAtDisplay}
+                    </div>
+                    <div>
+                        <button class="revoke-btn" data-key="${data.key}" ${!data.isUsed ? 'disabled' : ''}>
+                            Revoke Access
+                        </button>
+                    </div>
+                `;
+                licenseKeyListElement.appendChild(listItem);
+            });
+
+            if (snapshot.empty) {
+                licenseKeyListElement.innerHTML = '<li class="text-center text-gray-500">No license keys found. Run generate_keys.py first.</li>';
+            }
+
+            // Dynamically add event listeners to the buttons
+            document.querySelectorAll('.revoke-btn[data-key]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const key = button.getAttribute('data-key');
+                    showRevokeModal(key);
+                });
+            });
+        }, (error) => {
+            console.error("Error fetching license keys:", error);
+            loadingElement.textContent = "Error loading keys. Check console and Firebase rules.";
+        });
+    </script>
+</body>
+</html>

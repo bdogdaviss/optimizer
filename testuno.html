@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Gaming PC Optimizer - Maximize Your Gaming Performance</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+      color: #ffffff;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+      z-index: 1000;
+      padding: 1rem 0;
+      transition: all 0.3s ease;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(45deg, #00ff88, #00b4d8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+
+    .nav-links a:hover {
+      color: #00ff88;
+      background: rgba(0, 255, 136, 0.1);
+    }
+
+    .buy-btn {
+      background: linear-gradient(45deg, #00ff88, #00b4d8);
+      color: #000;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .buy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 255, 136, 0.3);
+    }
+
+    /* Main Content */
+    .page {
+      min-height: 100vh;
+      padding-top: 80px;
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* Home Page */
+    .hero {
+      padding: 4rem 2rem;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, #ffffff, #00ff88);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero .subtitle {
+      font-size: 1.25rem;
+      color: #8a92a5;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .cta-primary {
+      background: linear-gradient(45deg, #00ff88, #00b4d8);
+      color: #000;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .cta-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0, 255, 136, 0.4);
+    }
+
+    .cta-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      padding: 1rem 2rem;
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .cta-secondary:hover {
+      background: rgba(0, 255, 136, 0.1);
+      border-color: rgba(0, 255, 136, 0.5);
+    }
+
+    /* Features Grid */
+    .features {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .features h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: #00ff88;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .feature-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(0, 255, 136, 0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+      opacity: 0.8;
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: #00ff88;
+    }
+
+    .feature-card p {
+      color: #8a92a5;
+      line-height: 1.6;
+    }
+
+    /* App Screenshots */
+    .app-preview {
+      padding: 4rem 2rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .app-preview h2 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: #00ff88;
+    }
+
+    .screenshot-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      border-radius: 12px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .mock-screenshot {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    .mock-titlebar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+      margin-bottom: 1rem;
+    }
+
+    .mock-title {
+      color: #00ff88;
+      font-weight: 600;
+    }
+
+    .mock-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .mock-stat {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mock-stat h4 {
+      color: #00ff88;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .mock-stat .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    /* Page Content */
+    .page-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .page-header h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, #ffffff, #00ff88);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .page-header p {
+      font-size: 1.2rem;
+      color: #8a92a5;
+    }
+
+    /* How to Use Steps */
+    .steps-container {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .step-number {
+      background: linear-gradient(45deg, #00ff88, #00b4d8);
+      color: #000;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .step-content h3 {
+      color: #00ff88;
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+    }
+
+    .step-content p {
+      color: #8a92a5;
+      line-height: 1.6;
+    }
+
+    /* About Us */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .about-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .about-card h3 {
+      color: #00ff88;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .about-card p {
+      color: #8a92a5;
+      line-height: 1.6;
+    }
+
+    /* Buy Now */
+    .pricing-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid rgba(0, 255, 136, 0.3);
+      border-radius: 20px;
+      padding: 3rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(0, 255, 136, 0.1), rgba(0, 180, 216, 0.1));
+      z-index: -1;
+    }
+
+    .price {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #00ff88;
+      margin-bottom: 1rem;
+    }
+
+    .price-description {
+      color: #8a92a5;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .features-list {
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    .features-list li {
+      padding: 0.5rem 0;
+      color: #ffffff;
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .features-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #00ff88;
+      font-weight: bold;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .nav-container {
+        padding: 0 1rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero .subtitle {
+        font-size: 1.1rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .step {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 255, 136, 0.3);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 255, 136, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo" onclick="showPage('home')">AURA</a>
+      <ul class="nav-links">
+        <li><a href="#" onclick="showPage('home')">Home</a></li>
+        <li><a href="#" onclick="showPage('how-to-use')">How to Use</a></li>
+        <li><a href="#" onclick="showPage('about')">About Us</a></li>
+      </ul>
+      <a href="#" class="buy-btn" onclick="showPage('buy-now')">Buy Now</a>
+    </div>
+  </nav>
+
+  <!-- Home Page -->
+  <div id="home" class="page active">
+    <section class="hero fade-in">
+      <h1>AURA Gaming PC Optimizer</h1>
+      <p class="subtitle">Unlock your PC's full potential with intelligent system optimization designed specifically for gamers</p>
+      <div class="cta-buttons">
+        <a href="#" class="cta-primary" onclick="showPage('buy-now')">Get Aura Now</a>
+        <a href="#" class="cta-secondary" onclick="showPage('how-to-use')">Learn More</a>
+      </div>
+    </section>
+
+    <section class="features">
+      <h2>Powerful Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="#00ff88">
+            <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+          </svg>
+          <h3>System Dashboard</h3>
+          <p>Real-time monitoring of RAM usage, network latency, and system performance with beautiful visualizations</p>
+        </div>
+
+        <div class="feature-card">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="#00ff88">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <h3>Smart Optimizer</h3>
+          <p>Automated optimization with customizable settings for Game Mode, memory cleanup, and background process management</p>
+        </div>
+
+        <div class="feature-card">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="#00ff88">
+            <path d="M17,7H22V9H17V7M17,15H22V17H17V15M17,11H22V13H17V11M15,9H7L10.5,13L7,17H15A2,2 0 0,0 17,15V11A2,2 0 0,0 15,9Z"/>
+          </svg>
+          <h3>Memory Management</h3>
+          <p>Advanced RAM optimization with memory compression and intelligent process trimming for maximum performance</p>
+        </div>
+
+        <div class="feature-card">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="#00ff88">
+            <path d="M1,9L12,1L21,9H19V20H15V14H9V20H5V9H3M7,11H9V12H7V11M11,11H13V12H11V11M15,11H17V12H15V11Z"/>
+          </svg>
+          <h3>Network Optimization</h3>
+          <p>DNS switching to faster servers and TCP optimization for reduced latency and improved connection stability</p>
+        </div>
+
+        <div class="feature-card">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="#00ff88">
+            <path d="M5,13.18V14.82L3,16.82V21H5V17.18L7,15.18V13.82L5,15.82V13.18M9,15.18V17.18L11,19.18H13V17.82L9,15.18M15,21H21V19H15V21M15,13H21V15H15V13M15,17H21V19H15V17M15,9H21V11H15V9M3,5V7H21V5H3Z"/>
+          </svg>
+          <h3>GPU Acceleration</h3>
+          <p>Hardware GPU scheduling, visual effects optimization, and NVIDIA-specific performance enhancements</p>
+        </div>
+
+        <div class="feature-card">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="#00ff88">
+            <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/>
+          </svg>
+          <h3>Restore Points</h3>
+          <p>Safe system optimization with automatic restore points and the ability to revert changes if needed</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="app-preview">
+      <h2>See Aura in Action</h2>
+      <div class="screenshot-container">
+        <div class="mock-screenshot">
+          <div class="mock-titlebar">
+            <div class="mock-title">System Dashboard</div>
+            <div style="color: #8a92a5; font-size: 12px;">Real-time Performance Monitoring</div>
+          </div>
+          <div class="mock-content">
+            <div class="mock-stat">
+              <h4>RAM Usage</h4>
+              <div class="value">8.2 GB</div>
+              <div style="color: #8a92a5; font-size: 12px;">of 16.0 GB used</div>
+            </div>
+            <div class="mock-stat">
+              <h4>Network Latency</h4>
+              <div class="value">12 ms</div>
+              <div style="color: #8a92a5; font-size: 12px;">ping to 8.8.8.8</div>
+            </div>
+            <div class="mock-stat">
+              <h4>Last Optimization</h4>
+              <div class="value" style="font-size: 1.2rem;">2 hours ago</div>
+              <div style="color: #8a92a5; font-size: 12px;">3.2 GB RAM freed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- How to Use Page -->
+  <div id="how-to-use" class="page">
+    <div class="page-content fade-in">
+      <div class="page-header">
+        <h1>How to Use Aura</h1>
+        <p>Get the most out of your gaming PC with these simple steps</p>
+      </div>
+
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Install & Activate License</h3>
+            <p>Download and install Aura Gaming PC Optimizer. Enter your license key in the License Management page to unlock all features. The app will automatically detect your hardware configuration.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Monitor System Performance</h3>
+            <p>Use the Dashboard to monitor your system's real-time performance including RAM usage, network latency, and GPU status. Keep track of your optimization history and system health.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Customize Optimization Settings</h3>
+            <p>Navigate to the Optimizer page to configure which optimizations to run. Choose from Performance, Storage, Memory, Network, and Graphics optimizations based on your needs.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>Create Restore Points</h3>
+            <p>Before running optimizations, create a restore point from the Restore Points page. This allows you to safely revert any changes if needed.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h3>Run Optimization</h3>
+            <p>Click "Optimize Now" to run your selected optimizations. The app will show real-time progress and provide detailed results including RAM freed and junk files cleaned.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">6</div>
+          <div class="step-content">
+            <h3>Debug & Monitor</h3>
+            <p>Use the Debug page to test individual features, run system health checks, and monitor detailed logs. Export system reports for troubleshooting or performance analysis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Us Page -->
+  <div id="about" class="page">
+    <div class="page-content fade-in">
+      <div class="page-header">
+        <h1>About Aura</h1>
+        <p>Dedicated to maximizing your gaming performance</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>Our Mission</h3>
+          <p>At Aura, we believe every gamer deserves the best possible performance from their PC. Our intelligent optimization software is designed to unlock your system's full potential without compromising stability or safety.</p>
+        </div>
+
+        <div class="about-card">
+          <h3>Advanced Technology</h3>
+          <p>Built with cutting-edge technology including real-time system monitoring, intelligent process management, and hardware-specific optimizations for maximum compatibility and performance gains.</p>
+        </div>
+
+        <div class="about-card">
+          <h3>Safety First</h3>
+          <p>All optimizations are designed with safety in mind. Automatic restore points, comprehensive logging, and the ability to revert changes ensure your system remains stable and secure.</p>
+        </div>
+
+        <div class="about-card">
+          <h3>Gaming Focused</h3>
+          <p>Every feature is specifically designed for gaming performance. From Game Mode activation to GPU scheduling optimization, Aura understands what gamers need most.</p>
+        </div>
+
+        <div class="about-card">
+          <h3>Continuous Innovation</h3>
+          <p>We continuously update and improve Aura with new optimization techniques, better performance monitoring, and support for the latest hardware and software technologies.</p>
+        </div>
+
+        <div class="about-card">
+          <h3>Community Driven</h3>
+          <p>Our development is guided by feedback from the gaming community. We listen to our users and implement features that make a real difference in gaming performance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buy Now Page -->
+  <div id="buy-now" class="page">
+    <div class="page-content fade-in">
+      <div class="page-header">
+        <h1>Get Aura Now</h1>
+        <p>Unlock your PC's full gaming potential</p>
+      </div>
+
+      <div class="pricing-container">
+        <div class="pricing-card">
+          <div class="price">$29.99</div>
+          <div class="price-description">One-time purchase • Lifetime license</div>
+          
+          <ul class="features-list">
+            <li>Complete system optimization suite</li>
+            <li>Real-time performance monitoring</li>
+            <li>Intelligent memory management</li>
+            <li>Network and DNS optimization</li>
+            <li>GPU and graphics acceleration</li>
+            <li>Automated restore points</li>
+            <li>Background process cleanup</li>
+            <li>Disk and cache cleaning</li>
+            <li>Advanced debugging tools</li>
+            <li>Lifetime updates and support</li>
+          </ul>
+
+          <a href="https://www.paypal.com/ncp/payment/79PXBKPV3Z27C" class="cta-primary" style="display: inline-block; margin-top: 1rem;" target="_blank">Purchase License</a>
+          
+          <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+            <h4 style="color: #00ff88; margin-bottom: 1rem;">System Requirements</h4>
+            <p style="color: #8a92a5; font-size: 0.9rem; line-height: 1.4;">
+              Windows 10/11 (64-bit) • 4GB RAM minimum • 100MB free disk space • Administrator privileges required for optimizations
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPage(pageId) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      
+      // Show selected page
+      const targetPage = document.getElementById(pageId);
+      if (targetPage) {
+        targetPage.classList.add('active');
+        targetPage.classList.add('fade-in');
+        
+        // Remove animation class after animation completes
+        setTimeout(() => {
+          targetPage.classList.remove('fade-in');
+        }, 600);
+      }
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Add scroll effect to navbar
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(0, 0, 0, 0.95)';
+      } else {
+        navbar.style.background = 'rgba(0, 0, 0, 0.9)';
+      }
+    });
+
+    // Mobile menu toggle (placeholder for future enhancement)
+    function toggleMobileMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('mobile-active');
+    }
+
+    // Add mobile menu styles
+    const mobileStyles = `
+      @media (max-width: 768px) {
+        .nav-links.mobile-active {
+          display: flex;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: rgba(0, 0, 0, 0.95);
+          flex-direction: column;
+          padding: 1rem;
+          border-top: 1px solid rgba(0, 255, 136, 0.2);
+        }
+        
+        .nav-container::after {
+          content: '☰';
+          display: block;
+          color: #ffffff;
+          font-size: 1.5rem;
+          cursor: pointer;
+        }
+      }
+    `;
+
+    // Intersection Observer for fade-in animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe elements for animations
+    document.addEventListener('DOMContentLoaded', () => {
+      const animatedElements = document.querySelectorAll('.feature-card, .step, .about-card');
+      animatedElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+      });
+    });
+
+    // Add particle background effect
+    function createParticles() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.pointerEvents = 'none';
+      canvas.style.zIndex = '-1';
+      canvas.style.opacity = '0.1';
+      
+      document.body.appendChild(canvas);
+      
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      
+      const particles = [];
+      const particleCount = 50;
+      
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          size: Math.random() * 2 + 1
+        });
+      }
+      
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#00ff88';
+        
+        particles.forEach(particle => {
+          particle.x += particle.vx;
+          particle.y += particle.vy;
+          
+          if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
+          if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+          
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        
+        requestAnimationFrame(animateParticles);
+      }
+      
+      animateParticles();
+    }
+    
+    // Initialize particles after page load
+    window.addEventListener('load', createParticles);
+  </script>
+</body>
+</html>
