@@ -1,0 +1,26 @@
+﻿# dependencies
+node_modules/
+
+# build output / artifacts
+dist/
+out/
+release/
+build/
+dist.zip
+
+# installers / binaries
+*.exe
+*.msi
+*.dmg
+*.AppImage
+*.asar
+*.zip
+
+# secrets / env
+.env
+.env.*
+aura-opt-admin-firebase-adminsdk-*.json
+
+# OS junk
+.DS_Store
+Thumbs.db
