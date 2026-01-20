@@ -1,14 +1,10 @@
-﻿# dependencies
-node_modules/
-
-# build output / artifacts
+﻿node_modules/
 dist/
 out/
 release/
 build/
 dist.zip
 
-# installers / binaries
 *.exe
 *.msi
 *.dmg
@@ -16,11 +12,9 @@ dist.zip
 *.asar
 *.zip
 
-# secrets / env
 .env
 .env.*
-aura-opt-admin-firebase-adminsdk-*.json
 
-# OS junk
-.DS_Store
+aura-opt-admin-firebase-adminsdk-*.json
 Thumbs.db
+.DS_Store
